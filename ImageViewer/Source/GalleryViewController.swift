@@ -22,6 +22,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate var thumbnailsButton: UIButton? = UIButton.thumbnailsButton()
     fileprivate var deleteButton: UIButton? = UIButton.deleteButton()
     fileprivate let scrubber = VideoScrubber()
+    fileprivate var playerDeferred: Deferred<AVPlayer?>?
 
     fileprivate weak var initialItemController: ItemController?
 
@@ -611,8 +612,11 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     public func itemControllerWillAppear(_ controller: ItemController) {
 
         if let videoController = controller as? VideoViewController {
-
-            scrubber.player = videoController.player
+            playerDeferred?.clear()
+            videoController.playerDeferred.setupCallback { [weak self] in
+                self?.scrubber.player = $0
+            }
+            playerDeferred = videoController.playerDeferred
         }
     }
 
@@ -620,6 +624,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         if let _ = controller as? VideoViewController {
 
+            playerDeferred?.clear()
+            playerDeferred = nil
             scrubber.player = nil
 
             UIView.animate(withDuration: 0.3, animations: { [weak self] in
@@ -636,8 +642,13 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         self.headerView?.sizeToFit()
         self.footerView?.sizeToFit()
 
-        if let videoController = controller as? VideoViewController {            
-            scrubber.player = videoController.player
+        if let videoController = controller as? VideoViewController {
+            playerDeferred?.clear()
+            videoController.playerDeferred.setupCallback { [weak self] in
+                self?.scrubber.player = $0
+            }
+            playerDeferred = videoController.playerDeferred
+
             if scrubber.alpha == 0 && decorationViewsHidden == false {
 
                 UIView.animate(withDuration: 0.3, animations: { [weak self] in
