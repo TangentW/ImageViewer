@@ -26,6 +26,9 @@ public enum GalleryConfigurationItem {
 
     ///Option to set the Thumbnails button type.
     case thumbnailsButtonMode(ButtonMode)
+    
+    ///Custom action for Thumbnails button
+    case thumbnailsButtonAction(() -> ())
 
     ///Option to set the Delete button type.
     case deleteButtonMode(ButtonMode)

@@ -20,6 +20,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate var closeButton: UIButton? = UIButton.closeButton()
     fileprivate var seeAllCloseButton: UIButton? = nil
     fileprivate var thumbnailsButton: UIButton? = UIButton.thumbnailsButton()
+    fileprivate var thumbnailsButtonAction: (() -> ())?
     fileprivate var deleteButton: UIButton? = UIButton.deleteButton()
     fileprivate let scrubber = VideoScrubber()
     fileprivate var playerDeferred: Deferred<AVPlayer?>?
@@ -108,6 +109,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             case .continuePlayVideoOnEnd(let enabled):          continueNextVideoOnFinish = enabled
             case .seeAllCloseLayout(let layout):                seeAllCloseLayout = layout
             case .videoControlsColor(let color):                scrubber.tintColor = color
+            case .thumbnailsButtonAction(let action):           thumbnailsButtonAction = action
             case .closeButtonMode(let buttonMode):
 
                 switch buttonMode {
@@ -426,6 +428,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     //ThumbnailsimageBlock
 
     @objc fileprivate func showThumbnails() {
+        if let action = thumbnailsButtonAction { action(); return }
 
         let thumbnailsController = ThumbnailsViewController(itemsDataSource: self.itemsDataSource)
 
