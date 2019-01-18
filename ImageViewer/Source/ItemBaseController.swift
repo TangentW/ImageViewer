@@ -203,20 +203,22 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
 
                 DispatchQueue.main.async {
                     self?.activityIndicatorView.stopAnimating()
-
-                    var itemView = self?.itemView
-                    itemView?.image = image
-                    itemView?.isAccessibilityElement = image.isAccessibilityElement
-                    itemView?.accessibilityLabel = image.accessibilityLabel
-                    itemView?.accessibilityTraits = image.accessibilityTraits
-
-                    self?.view.setNeedsLayout()
-                    self?.view.layoutIfNeeded()
+                    self?._setImage(image)
                 }
             }
         }
     }
-
+    
+    private func _setImage(_ image: UIImage) {
+        itemView.image = image
+        itemView.isAccessibilityElement = image.isAccessibilityElement
+        itemView.accessibilityLabel = image.accessibilityLabel
+        itemView.accessibilityTraits = image.accessibilityTraits
+        
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
+    }
+    
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -473,15 +475,15 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
                     animatedImageView.bounds.size = self?.displacementTargetSize(forSize: image.size) ?? image.size
                     animatedImageView.center = self?.view.boundsCenter ?? CGPoint.zero
 
-                    }, completion: { [weak self] _ in
+                }, completion: { [weak self] _ in
+                    self?._setImage(image)
+                    self?.itemView.isHidden = false
+                    displacedView.isHidden = false
+                    animatedImageView.removeFromSuperview()
 
-                        self?.itemView.isHidden = false
-                        displacedView.isHidden = false
-                        animatedImageView.removeFromSuperview()
-
-                        self?.isAnimating = false
-                        completion()
-                    })
+                    self?.isAnimating = false
+                    completion()
+                })
             }
         }
 
