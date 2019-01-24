@@ -271,8 +271,8 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
         self.delegate?.itemControllerDidSingleTap(self)
     }
 
-    @objc func scrollViewDidLongPress() {
-
+    @objc func scrollViewDidLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        guard gestureRecognizer.state == .recognized else { return }
         self.delegate?.itemControllerDidLongPress(self, in: itemView)
     }
 
