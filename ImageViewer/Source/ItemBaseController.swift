@@ -476,7 +476,7 @@ open class ItemBaseController<T: UIView>: UIViewController, ItemController, UIGe
                     animatedImageView.center = self?.view.boundsCenter ?? CGPoint.zero
 
                 }, completion: { [weak self] _ in
-                    self?._setImage(image)
+                    if self?.itemView.image == nil { self?._setImage(image) }
                     self?.itemView.isHidden = false
                     displacedView.isHidden = false
                     animatedImageView.removeFromSuperview()
