@@ -78,32 +78,20 @@ public enum GalleryConfigurationItem {
     ///Sets the duration of the animation when item is double tapped and transitions between ScaleToAspectFit & ScaleToAspectFill sizes.
     case doubleTapToZoomDuration(TimeInterval)
 
-    ///Transition duration for the blur layer component of the overlay when Gallery is being presented.
-    case blurPresentDuration(TimeInterval)
+    ///Transition style for the blur layer component of the overlay when Gallery is being presented.
+    case blurPresentAnimationStyle(AnimationStyle)
 
-    ///Delayed start for the transition of the blur layer component of the overlay when Gallery is being presented.
-    case blurPresentDelay(TimeInterval)
-
-    ///Transition duration for the color layer component of the overlay when Gallery is being presented.
-    case colorPresentDuration(TimeInterval)
-
-    ///Delayed start for the transition of color layer component of the overlay when Gallery is being presented.
-    case colorPresentDelay(TimeInterval)
+    ///Transition style for the color layer component of the overlay when Gallery is being presented.
+    case colorPresentAnimationStyle(AnimationStyle)
 
     ///Delayed start for decoration views transition (fade-in) when Gallery is being presented.
     case decorationViewsPresentDelay(TimeInterval)
 
-    ///Transition duration for the blur layer component of the overlay when Gallery is being dismissed.
-    case blurDismissDuration(TimeInterval)
+    ///Transition style for the blur layer component of the overlay when Gallery is being dismissed.
+    case blurDismissAnimationStyle(AnimationStyle)
 
-    ///Transition delay for the blur layer component of the overlay when Gallery is being dismissed.
-    case blurDismissDelay(TimeInterval)
-
-    ///Transition duration for the color layer component of the overlay when Gallery is being dismissed.
-    case colorDismissDuration(TimeInterval)
-
-    ///Transition delay for the color layer component of the overlay when Gallery is being dismissed.
-    case colorDismissDelay(TimeInterval)
+    ///Transition style for the color layer component of the overlay when Gallery is being dismissed.
+    case colorDismissAnimationStyle(AnimationStyle)
 
     ///Transition duration for the item when the fade-in/fade-out effect is used globally for items while Gallery is being presented /dismissed.
     case itemFadeDuration(TimeInterval)
@@ -206,4 +194,19 @@ public struct GallerySwipeToDismissMode: OptionSet {
     public static let horizontal = GallerySwipeToDismissMode(rawValue: 1 << 0)
     public static let vertical   = GallerySwipeToDismissMode(rawValue: 1 << 1)
     public static let always: GallerySwipeToDismissMode = [ .horizontal, .vertical ]
+}
+
+public enum AnimationStyle {
+    case none
+    case custom(duration: TimeInterval, delay: TimeInterval)
+
+    func excute(animations: @escaping () -> Void, completion: ((Bool) -> Void)? = nil) {
+        switch self {
+        case .none:
+            animations()
+        case let .custom(duration, delay):
+            UIView.animateWithDuration(duration, delay: delay, animations: animations, completion: completion)
+        }
+
+    }
 }
