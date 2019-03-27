@@ -122,15 +122,11 @@ class ViewController: UIViewController {
 
             GalleryConfigurationItem.doubleTapToZoomDuration(0.15),
 
-            GalleryConfigurationItem.blurPresentDuration(0.5),
-            GalleryConfigurationItem.blurPresentDelay(0),
-            GalleryConfigurationItem.colorPresentDuration(0.25),
-            GalleryConfigurationItem.colorPresentDelay(0),
+            GalleryConfigurationItem.blurPresentAnimationStyle(.custom(duration: 0.5, delay: 0)),
+            GalleryConfigurationItem.colorPresentAnimationStyle(.custom(duration: 0.25, delay: 0)),
 
-            GalleryConfigurationItem.blurDismissDuration(0.1),
-            GalleryConfigurationItem.blurDismissDelay(0.4),
-            GalleryConfigurationItem.colorDismissDuration(0.45),
-            GalleryConfigurationItem.colorDismissDelay(0),
+            GalleryConfigurationItem.blurDismissAnimationStyle(.none),
+            GalleryConfigurationItem.colorDismissAnimationStyle(.none),
 
             GalleryConfigurationItem.itemFadeDuration(0.3),
             GalleryConfigurationItem.decorationViewsFadeDuration(0.15),

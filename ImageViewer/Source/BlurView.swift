@@ -10,17 +10,13 @@ import UIKit
 
 class BlurView: UIView {
 
-    var blurPresentDuration: TimeInterval = 0.5
-    var blurPresentDelay: TimeInterval = 0
+    var blurPresentAnimationStyle: AnimationStyle = .custom(duration: 0.5, delay: 0)
 
-    var colorPresentDuration: TimeInterval = 0.25
-    var colorPresentDelay: TimeInterval = 0
+    var colorPresentAnimationStyle: AnimationStyle = .custom(duration: 0.25, delay: 0)
 
-    var blurDismissDuration: TimeInterval = 0.1
-    var blurDismissDelay: TimeInterval = 0.4
+    var blurDismissAnimationStyle: AnimationStyle = .none
 
-    var colorDismissDuration: TimeInterval = 0.45
-    var colorDismissDelay: TimeInterval = 0
+    var colorDismissAnimationStyle: AnimationStyle = .none
 
     var blurTargetOpacity: CGFloat = 1
     var colorTargetOpacity: CGFloat = 1
@@ -64,31 +60,23 @@ class BlurView: UIView {
 
     func present() {
 
-        UIView.animate(withDuration: blurPresentDuration, delay: blurPresentDelay, options: .curveLinear, animations: { [weak self] in
-
+        blurDismissAnimationStyle.excute(animations: { [weak self] in
             self?.blurringViewContainer.alpha = self!.blurTargetOpacity
+        })
 
-            }, completion: nil)
-
-        UIView.animate(withDuration: colorPresentDuration, delay: colorPresentDelay, options: .curveLinear, animations: { [weak self] in
-
+        colorPresentAnimationStyle.excute(animations: { [weak self] in
             self?.colorView.alpha = self!.colorTargetOpacity
-
-            }, completion: nil)
+        })
     }
 
     func dismiss() {
 
-        UIView.animate(withDuration: blurDismissDuration, delay: blurDismissDelay, options: .curveLinear, animations: { [weak self] in
-
+        blurDismissAnimationStyle.excute(animations: { [weak self] in
             self?.blurringViewContainer.alpha = 0
+        })
 
-            }, completion: nil)
-
-        UIView.animate(withDuration: colorDismissDuration, delay: colorDismissDelay, options: .curveLinear, animations: { [weak self] in
-
+        colorDismissAnimationStyle.excute(animations: { [weak self] in
             self?.colorView.alpha = 0
-
-            }, completion: nil)
+        })
     }
 }
